@@ -3,11 +3,27 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,6 +32,14 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --primary: #3b82f6;
+    --primary-foreground: #ffffff;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
+    --card: #1e293b;
+    --card-foreground: #f8fafc;
+    --border: #334155;
+    --input: #334155;
   }
 }
 
@@ -23,4 +47,99 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ✅ Button styles - NO @apply referencing custom classes */
+@layer components {
+  /* Base button - all shared styles written out */
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors text-sm inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  
+  /* Variants - repeat base styles + add variant-specific */
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors text-sm inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+  
+  .btn-outline {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors text-sm inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed border border-border hover:bg-muted text-foreground;
+  }
+  
+  .btn-secondary {
+    @apply px-4 py-2 rounded-lg font-medium transition-colors text-sm inline-flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed bg-muted text-foreground hover:bg-muted/80;
+  }
+}
+
+/* Print-specific styles */
+@media print {
+  .print\:hidden {
+    display: none !important;
+  }
+  
+  .print\:block {
+    display: block !important;
+  }
+  
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+  }
+  
+  section {
+    break-inside: avoid;
+  }
+  
+  table {
+    width: 100% !important;
+    font-size: 10pt !important;
+  }
+  
+  canvas, svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  
+  .print\:break-before-page {
+    break-before: page;
+  }
+  .print\:break-inside-avoid {
+    break-inside: avoid;
+  }
+  
+  .text-primary {
+    color: #000 !important;
+    font-weight: bold;
+  }
+  .bg-primary\/10 {
+    background: #f0f0f0 !important;
+  }
+  
+  button, [role="button"], input, select {
+    display: none !important;
+  }
+  
+  a {
+    color: #0066cc !important;
+    text-decoration: underline !important;
+  }
+}
+
+@media screen {
+  .print\:block {
+    display: none !important;
+  }
+}
+
+/* Print optimization for SVG charts */
+@media print {
+  svg {
+    shape-rendering: crispEdges !important;
+  }
+  
+  .relative[style*="height"] {
+    height: auto !important;
+    min-height: 200px !important;
+  }
 }
